@@ -1,12 +1,16 @@
 package edu.uga.cs.worldquiz;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Button;
 
 import edu.uga.cs.worldquiz.CountryDbHelper;
 import edu.uga.cs.worldquiz.DatabaseContract.CountryEntry;
@@ -21,12 +25,32 @@ public class MainActivity extends AppCompatActivity implements ImportCsvTask.OnI
     private static final String TAG = "MainActivity";
 
     private CountryDbHelper dbHelper;
-    private TextView tvResult;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Setting buttons to properly relocate users
+        Button quizButton = findViewById(R.id.start_button);
+        quizButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, QuizScreen.class);
+                startActivity(intent);
+            }
+        });
+
+        Button resultsButton = findViewById(R.id.results_button);
+        resultsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ResultsScreen.class);
+                startActivity(intent);
+            }
+        });
+
 
         // Initialize database
         initializeDatabase();
