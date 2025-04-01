@@ -11,8 +11,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -170,5 +173,55 @@ public class CountryDbHelper extends SQLiteOpenHelper {
 
         return countryContinentMap;
     }
+
+    /**
+     * Retrieves all quiz results from the database in descending order by date.
+     * @return A list of formatted strings, each resulting in a past quiz result.
+     */
+    public List<String> getAllQuizResults() {
+        List<String> results = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT r.score, r.date FROM " + DatabaseContract.ResultEntry.TABLE_NAME + " r ORDER BY r.date DESC",
+                null
+        );
+
+        while (cursor.moveToNext()) {
+            int score = cursor.getInt(0);
+            String date = cursor.getString(1);
+            results.add("Date: " + date + " | Score: " + score + "/6");
+        }
+
+        cursor.close();
+        return results;
+    }
+
+    /**
+     * Inserts a new quiz result into the database.
+     * The method stores both a quiz entry and a corresponding result entry.
+     * @param score The final score achieved in the quiz (out of 6).
+     */
+    public void insertQuizResult(int score) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // gets the date and time of the quiz completion and formats it
+        String date = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
+
+        // create a new quiz record
+        ContentValues quizValues = new ContentValues();
+        quizValues.put(DatabaseContract.QuizEntry.COLUMN_NAME_TITLE, "Quiz");
+        quizValues.put(DatabaseContract.QuizEntry.COLUMN_NAME_DATE, date);
+        long quizId = db.insert(DatabaseContract.QuizEntry.TABLE_NAME, null, quizValues);
+
+        // inserts the quiz result
+        ContentValues resultValues = new ContentValues();
+        resultValues.put(DatabaseContract.ResultEntry.COLUMN_NAME_QUIZ_ID, quizId);
+        resultValues.put(DatabaseContract.ResultEntry.COLUMN_NAME_SCORE, score);
+        resultValues.put(DatabaseContract.ResultEntry.COLUMN_NAME_DATE, date);
+        db.insert(DatabaseContract.ResultEntry.TABLE_NAME, null, resultValues);
+    }
+
+
 
 }

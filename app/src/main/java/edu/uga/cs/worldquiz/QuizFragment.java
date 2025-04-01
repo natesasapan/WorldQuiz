@@ -105,6 +105,10 @@ public class QuizFragment extends Fragment {
     }
 
     private void showResults() {
+        CountryDbHelper dbHelper = CountryDbHelper.getInstance(requireContext());
+        int score = viewModel.getScore().getValue() != null ? viewModel.getScore().getValue() : 0;
+        dbHelper.insertQuizResult(score);
+
         // Navigate to results fragment
         getParentFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new ResultsFragment())

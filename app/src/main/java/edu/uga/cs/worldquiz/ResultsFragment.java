@@ -46,6 +46,17 @@ public class ResultsFragment extends Fragment {
             }
         });
 
+        // "View All Results" button
+        Button viewAllResultsButton = view.findViewById(R.id.view_all_results_button);
+        viewAllResultsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // ResultsScreen activity
+                Intent intent = new Intent(requireActivity(), ResultsScreen.class);
+                startActivity(intent);
+            }
+        });
+
         // home button
         Button homeButton = view.findViewById(R.id.home_button);
         homeButton.setOnClickListener(new View.OnClickListener() {
