@@ -107,4 +107,14 @@ public class QuizViewModel extends AndroidViewModel {
     public boolean isQuizComplete() {
         return currentQuestionIndex.getValue() >= questions.size();
     }
+
+    public void startNewQuiz() {
+        score.setValue(0); // reset score
+        currentQuestionIndex.setValue(0);
+
+        countryContinentPairs = dbHelper.getRandomCountryContinentPairs(6); // get new questions/pairs
+
+        questions.clear();
+        createCountryQuestions();
+    }
 }

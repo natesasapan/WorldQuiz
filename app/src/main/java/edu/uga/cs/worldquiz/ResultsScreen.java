@@ -11,5 +11,7 @@ public class ResultsScreen extends AppCompatActivity {
         setContentView(R.layout.results_screen);
 
         // This activity doesn't do anything yet - it just exists
+
+
     }
 }
