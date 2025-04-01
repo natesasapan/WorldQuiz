@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.io.File;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * SQLite database helper class to manage database creation and version management
@@ -114,4 +116,56 @@ public class CountryDbHelper extends SQLiteOpenHelper {
         cursor.close();
         return count > 0;
     }
+
+    /**
+     * Get random country-continent pairs
+     * @param count Number of random countries to retrieve
+     * @return A Map with country names as keys and their continents as values
+     */
+    public Map<String, String> getRandomCountryContinentPairs(int count) {
+        Map<String, String> countryContinentMap = new HashMap<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // We need both country and continent columns
+        String[] projection = {
+                CountryEntry.COLUMN_NAME_COUNTRY,
+                CountryEntry.COLUMN_NAME_CONTINENT
+        };
+
+        // Get random countries
+        Cursor cursor = db.query(
+                CountryEntry.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                "RANDOM()",
+                String.valueOf(count)
+        );
+
+        try {
+            // Process all rows
+            while (cursor != null && cursor.moveToNext()) {
+                // Get column indices
+                int nameIndex = cursor.getColumnIndexOrThrow(CountryEntry.COLUMN_NAME_COUNTRY);
+                int continentIndex = cursor.getColumnIndexOrThrow(CountryEntry.COLUMN_NAME_CONTINENT);
+
+                // Extract data
+                String countryName = cursor.getString(nameIndex);
+                String continent = cursor.getString(continentIndex);
+
+                // Add to map (country name as key, continent as value)
+                countryContinentMap.put(countryName, continent);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return countryContinentMap;
+    }
+
 }

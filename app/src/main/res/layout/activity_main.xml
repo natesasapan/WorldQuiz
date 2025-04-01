@@ -9,8 +9,8 @@
 
     <Button
         android:id="@+id/results_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="146dp"
+        android:layout_height="64dp"
         android:layout_marginTop="8dp"
         android:text="View Results"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,8 +47,8 @@
 
     <Button
         android:id="@+id/start_button"
-        android:layout_width="188dp"
-        android:layout_height="46dp"
+        android:layout_width="190dp"
+        android:layout_height="59dp"
         android:layout_marginTop="28dp"
         android:text="Get Started!"
         app:layout_constraintEnd_toEndOf="parent"
