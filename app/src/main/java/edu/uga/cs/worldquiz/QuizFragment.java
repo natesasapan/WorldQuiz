@@ -106,8 +106,7 @@ public class QuizFragment extends Fragment {
         RadioButton[] buttons = {
                 view.findViewById(R.id.option_1),
                 view.findViewById(R.id.option_2),
-                view.findViewById(R.id.option_3),
-                view.findViewById(R.id.option_4)
+                view.findViewById(R.id.option_3)
         };
 
         for (int i = 0; i < options.size(); i++) {

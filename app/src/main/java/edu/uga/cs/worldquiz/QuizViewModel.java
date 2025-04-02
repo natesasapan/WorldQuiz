@@ -64,8 +64,8 @@ public class QuizViewModel extends AndroidViewModel {
             List<String> options = new ArrayList<>();
             options.add(correctContinent);
 
-            // Add 3 random wrong continents
-            while (options.size() < 4) {
+            // Add 2 random wrong continents
+            while (options.size() < 3) {
                 String randomContinent = continents[random.nextInt(continents.length)];
                 if (!randomContinent.equals(correctContinent) && !options.contains(randomContinent)) {
                     options.add(randomContinent);
@@ -77,6 +77,11 @@ public class QuizViewModel extends AndroidViewModel {
 
             // Find the index of the correct answer
             int correctAnswerIndex = options.indexOf(correctContinent);
+
+            for (int i = 1; i < options.size() + 1; i++) {
+                String newString = i + ". " + options.get(i-1);
+                options.set(i-1, newString);
+            }
 
             // Create and add the question
             Question question = new Question(
