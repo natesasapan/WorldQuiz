@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -60,43 +62,103 @@ public class QuizFragment extends Fragment {
         questionText.setText(question.getQuestionText());
 
         // Set up the answer buttons
-        Button option1 = view.findViewById(R.id.option_1);
-        Button option2 = view.findViewById(R.id.option_2);
-        Button option3 = view.findViewById(R.id.option_3);
-        Button option4 = view.findViewById(R.id.option_4);
+//        Button option1 = view.findViewById(R.id.option_1);
+//        Button option2 = view.findViewById(R.id.option_2);
+//        Button option3 = view.findViewById(R.id.option_3);
+//        Button option4 = view.findViewById(R.id.option_4);
+//
+//        List<Button> optionButtons = Arrays.asList(option1, option2, option3, option4);
+//
+//        // Set the text for each option button
+//        List<String> options = question.getOptions();
+//        for (int i = 0; i < options.size(); i++) {
+//            optionButtons.get(i).setText(options.get(i));
+//
+//            final int optionIndex = i;
+//            optionButtons.get(i).setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (optionIndex == question.getCorrectAnswerIndex()) {
+//                        viewModel.updateScore();
+//                    }
+//
+//                    // Move to next question
+//                    viewModel.nextQuestion();
+//
+//                    if (!viewModel.isQuizComplete()) {
+//                        // Navigate to the next question fragment
+//                        getParentFragmentManager().beginTransaction()
+//                                .replace(R.id.fragment_container,
+//                                        newInstance(questionIndex + 1))
+//                                .addToBackStack(null)
+//                                .commit();
+//                    } else {
+//                        // Show results
+//                        showResults();
+//                    }
+//                }
+//            });
+//        }
 
-        List<Button> optionButtons = Arrays.asList(option1, option2, option3, option4);
-
-        // Set the text for each option button
+        // set up radio buttons
+        RadioGroup optionGroup = view.findViewById(R.id.option_group);
         List<String> options = question.getOptions();
+        RadioButton[] buttons = {
+                view.findViewById(R.id.option_1),
+                view.findViewById(R.id.option_2),
+                view.findViewById(R.id.option_3),
+                view.findViewById(R.id.option_4)
+        };
+
         for (int i = 0; i < options.size(); i++) {
-            optionButtons.get(i).setText(options.get(i));
+            buttons[i].setText(options.get(i));
+        }
 
-            final int optionIndex = i;
-            optionButtons.get(i).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (optionIndex == question.getCorrectAnswerIndex()) {
-                        viewModel.updateScore();
-                    }
+        // add swipe detection
+        view.setOnTouchListener(new OnSwipeTouchListener(requireContext()) {
+            @Override
+            public void onSwipeLeft() {
+                // Go forward only if an option is selected
+                RadioGroup optionGroup = view.findViewById(R.id.option_group);
+                int selectedId = optionGroup.getCheckedRadioButtonId();
+                if (selectedId == -1) return;
 
-                    // Move to next question
-                    viewModel.nextQuestion();
-
-                    if (!viewModel.isQuizComplete()) {
-                        // Navigate to the next question fragment
-                        getParentFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_container,
-                                        newInstance(questionIndex + 1))
-                                .addToBackStack(null)
-                                .commit();
-                    } else {
-                        // Show results
-                        showResults();
+                int selectedIndex = -1;
+                for (int i = 0; i < buttons.length; i++) { // finds selected answer
+                    if (buttons[i].getId() == selectedId) {
+                        selectedIndex = i;
+                        break;
                     }
                 }
-            });
-        }
+
+                if (selectedIndex == question.getCorrectAnswerIndex()) { // updates score if answer is correct
+                    viewModel.updateScore();
+                }
+
+                viewModel.nextQuestion();
+
+                if (!viewModel.isQuizComplete()) { // checks if quiz is complete
+                    getParentFragmentManager().beginTransaction() // move to next question
+                            .replace(R.id.fragment_container, newInstance(questionIndex + 1))
+                            .addToBackStack(null)
+                            .commit();
+                } else {
+                    showResults();
+                }
+            }
+
+            @Override
+            public void onSwipeRight() {
+                if (questionIndex > 0) {
+                    // goes back one question
+                    viewModel.previousQuestion();
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, newInstance(questionIndex - 1))
+                            .addToBackStack(null)
+                            .commit();
+                } // if
+            } // onSwipeRight
+        });
 
         // Display current question number out of total
         TextView questionCounter = view.findViewById(R.id.question_counter);

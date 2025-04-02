@@ -117,4 +117,12 @@ public class QuizViewModel extends AndroidViewModel {
         questions.clear();
         createCountryQuestions();
     }
+
+    public void previousQuestion() {
+        Integer index = currentQuestionIndex.getValue();
+        if (index != null && index > 0) {
+            currentQuestionIndex.setValue(index - 1);
+        }
+    }
+
 }

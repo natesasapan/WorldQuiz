@@ -32,32 +32,51 @@
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toBottomOf="@id/question_text">
 
-        <Button
-            android:id="@+id/option_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Option 1"
-            android:layout_marginBottom="8dp" />
+<!--        <Button-->
+<!--            android:id="@+id/option_1"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Option 1"-->
+<!--            android:layout_marginBottom="8dp" />-->
 
-        <Button
-            android:id="@+id/option_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Option 2"
-            android:layout_marginBottom="8dp" />
+<!--        <Button-->
+<!--            android:id="@+id/option_2"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Option 2"-->
+<!--            android:layout_marginBottom="8dp" />-->
 
-        <Button
-            android:id="@+id/option_3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Option 3"
-            android:layout_marginBottom="8dp" />
+<!--        <Button-->
+<!--            android:id="@+id/option_3"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Option 3"-->
+<!--            android:layout_marginBottom="8dp" />-->
 
-        <Button
-            android:id="@+id/option_4"
+<!--        <Button-->
+<!--            android:id="@+id/option_4"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Option 4" />-->
+
+        <RadioGroup
+            android:id="@+id/option_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Option 4" />
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@id/question_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <RadioButton android:id="@+id/option_1" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <RadioButton android:id="@+id/option_2" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <RadioButton android:id="@+id/option_3" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <RadioButton android:id="@+id/option_4" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
+        </RadioGroup>
+
 
     </LinearLayout>
 
