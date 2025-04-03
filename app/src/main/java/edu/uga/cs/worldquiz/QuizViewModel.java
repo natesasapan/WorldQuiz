@@ -12,26 +12,64 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Iterator;
 
+/**
+ * ViewModel class for the Quiz functionality.
+ * Manages the quiz questions, score, and current question index.
+ * This class is responsible for maintaining quiz state and providing
+ * data to the UI components through LiveData objects.
+ */
 public class QuizViewModel extends AndroidViewModel {
-    // Current score
+    /**
+     * LiveData for the current score.
+     * Stores the user's current quiz score, which is incremented for each correct answer.
+     */
     private MutableLiveData<Integer> score = new MutableLiveData<>(0);
+
+    /**
+     * Returns the LiveData for the current score.
+     * @return LiveData containing the current score.
+     */
     public LiveData<Integer> getScore() {
         return score;
     }
 
-    // Current question index
+    /**
+     * LiveData for the current question index.
+     * Tracks which question the user is currently viewing.
+     */
     private MutableLiveData<Integer> currentQuestionIndex = new MutableLiveData<>(0);
+
+    /**
+     * Returns the LiveData for the current question index.
+     * @return LiveData containing the current question index.
+     */
     public LiveData<Integer> getCurrentQuestionIndex() {
         return currentQuestionIndex;
     }
 
-    // Questions list
+    /**
+     * List of quiz questions.
+     * Contains the Question objects generated for the current quiz session.
+     */
     private List<Question> questions;
+
+    /**
+     * Map of country-continent pairs used to generate questions.
+     * Keys are country names and values are the corresponding continent names.
+     */
     private Map<String, String> countryContinentPairs;
 
-    // Database helper
+    /**
+     * Database helper instance.
+     * Provides access to the database containing country and continent information.
+     */
     private CountryDbHelper dbHelper;
 
+    /**
+     * Constructor for the QuizViewModel.
+     * Initializes the database helper, retrieves random country-continent pairs, and creates the quiz questions.
+     * @param application The application instance.
+     */
     public QuizViewModel(Application application) {
         super(application);
 
@@ -48,6 +86,11 @@ public class QuizViewModel extends AndroidViewModel {
         createCountryQuestions();
     }
 
+    /**
+     * Creates the country-continent questions based on the retrieved country-continent pairs.
+     * For each country, generates a question asking which continent it belongs to,
+     * with one correct answer and two random incorrect continent options.
+     */
     private void createCountryQuestions() {
         // Create questions based on the country-continent pairs
         String[] continents = {"Africa", "Antarctica", "Asia", "Oceania", "Europe", "North America", "South America"};
@@ -78,6 +121,7 @@ public class QuizViewModel extends AndroidViewModel {
             // Find the index of the correct answer
             int correctAnswerIndex = options.indexOf(correctContinent);
 
+            // Format options with numbering
             for (int i = 1; i < options.size() + 1; i++) {
                 String newString = i + ". " + options.get(i-1);
                 options.set(i-1, newString);
@@ -94,25 +138,42 @@ public class QuizViewModel extends AndroidViewModel {
         }
     }
 
+    /**
+     * Returns the list of quiz questions.
+     * @return List of Question objects for the current quiz.
+     */
     public List<Question> getQuestions() {
         return questions;
     }
 
-    // Navigate to next question
+    /**
+     * Navigates to the next question in the quiz.
+     * Increments the currentQuestionIndex to move forward in the quiz sequence.
+     */
     public void nextQuestion() {
         currentQuestionIndex.setValue(currentQuestionIndex.getValue() + 1);
     }
 
-    // Update score when answer is correct
+    /**
+     * Updates the score when an answer is correct.
+     * Increments the current score by 1 point.
+     */
     public void updateScore() {
         score.setValue(score.getValue() + 1);
     }
 
-    // Check if the quiz is complete
+    /**
+     * Checks if the quiz is complete (all questions have been answered).
+     * @return True if the quiz is complete, false otherwise.
+     */
     public boolean isQuizComplete() {
         return currentQuestionIndex.getValue() >= questions.size();
     }
 
+    /**
+     * Starts a new quiz by resetting the score, question index, and generating new questions.
+     * This method can be called to restart the quiz or start a fresh quiz.
+     */
     public void startNewQuiz() {
         score.setValue(0); // reset score
         currentQuestionIndex.setValue(0);
@@ -123,11 +184,15 @@ public class QuizViewModel extends AndroidViewModel {
         createCountryQuestions();
     }
 
+    /**
+     * Navigates to the previous question in the quiz, if available.
+     * Decrements the currentQuestionIndex to move backward in the quiz sequence.
+     * Will not go below zero (the first question).
+     */
     public void previousQuestion() {
         Integer index = currentQuestionIndex.getValue();
         if (index != null && index > 0) {
             currentQuestionIndex.setValue(index - 1);
         }
     }
-
 }
