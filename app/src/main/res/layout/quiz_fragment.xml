@@ -36,33 +36,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/question_text">
 
-        <!--        <Button-->
-        <!--            android:id="@+id/option_1"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="Option 1"-->
-        <!--            android:layout_marginBottom="8dp" />-->
-
-        <!--        <Button-->
-        <!--            android:id="@+id/option_2"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="Option 2"-->
-        <!--            android:layout_marginBottom="8dp" />-->
-
-        <!--        <Button-->
-        <!--            android:id="@+id/option_3"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="Option 3"-->
-        <!--            android:layout_marginBottom="8dp" />-->
-
-        <!--        <Button-->
-        <!--            android:id="@+id/option_4"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="Option 4" />-->
-
         <RadioGroup
             android:id="@+id/option_group"
             android:layout_width="match_parent"
@@ -90,7 +63,6 @@
                 android:layout_height="wrap_content" />
 
         </RadioGroup>
-
 
     </LinearLayout>
 

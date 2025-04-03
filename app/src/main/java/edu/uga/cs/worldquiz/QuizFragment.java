@@ -61,44 +61,6 @@ public class QuizFragment extends Fragment {
         TextView questionText = view.findViewById(R.id.question_text);
         questionText.setText(question.getQuestionText());
 
-        // Set up the answer buttons
-//        Button option1 = view.findViewById(R.id.option_1);
-//        Button option2 = view.findViewById(R.id.option_2);
-//        Button option3 = view.findViewById(R.id.option_3);
-//        Button option4 = view.findViewById(R.id.option_4);
-//
-//        List<Button> optionButtons = Arrays.asList(option1, option2, option3, option4);
-//
-//        // Set the text for each option button
-//        List<String> options = question.getOptions();
-//        for (int i = 0; i < options.size(); i++) {
-//            optionButtons.get(i).setText(options.get(i));
-//
-//            final int optionIndex = i;
-//            optionButtons.get(i).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (optionIndex == question.getCorrectAnswerIndex()) {
-//                        viewModel.updateScore();
-//                    }
-//
-//                    // Move to next question
-//                    viewModel.nextQuestion();
-//
-//                    if (!viewModel.isQuizComplete()) {
-//                        // Navigate to the next question fragment
-//                        getParentFragmentManager().beginTransaction()
-//                                .replace(R.id.fragment_container,
-//                                        newInstance(questionIndex + 1))
-//                                .addToBackStack(null)
-//                                .commit();
-//                    } else {
-//                        // Show results
-//                        showResults();
-//                    }
-//                }
-//            });
-//        }
 
         // set up radio buttons
         RadioGroup optionGroup = view.findViewById(R.id.option_group);
@@ -165,7 +127,11 @@ public class QuizFragment extends Fragment {
                 viewModel.getQuestions().size());
     }
 
+    /**
+     *  Save's users results to the database and then redirects to ResultsFragment.
+     */
     private void showResults() {
+        // saves quiz results to the db
         CountryDbHelper dbHelper = CountryDbHelper.getInstance(requireContext());
         int score = viewModel.getScore().getValue() != null ? viewModel.getScore().getValue() : 0;
         dbHelper.insertQuizResult(score);

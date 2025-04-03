@@ -52,6 +52,12 @@ public class ImportCsvTask extends AsyncTask<Void, Void, Boolean> {
         this.listener = listener;
     }
 
+    /**
+     * Imports the CSV files in the background.
+     * @param voids The parameters of the task.
+     *
+     * @return true if the import was successful, false otherwise
+     */
     @Override
     protected Boolean doInBackground(Void... voids) {
         try {
@@ -110,6 +116,11 @@ public class ImportCsvTask extends AsyncTask<Void, Void, Boolean> {
         }
     }
 
+    /**
+     * Called when the background tasks completes.
+     * @param success The result of the operation computed by {@link #doInBackground}.
+     *
+     */
     @Override
     protected void onPostExecute(Boolean success) {
         if (success) {

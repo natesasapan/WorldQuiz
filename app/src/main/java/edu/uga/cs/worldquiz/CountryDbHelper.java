@@ -38,12 +38,14 @@ public class CountryDbHelper extends SQLiteOpenHelper {
                     CountryEntry.COLUMN_NAME_COUNTRY + " TEXT," +
                     CountryEntry.COLUMN_NAME_CONTINENT + " TEXT)";
 
+    // SQL statements for creating quizzes table
     private static final String SQL_CREATE_QUIZZES =
             "CREATE TABLE " + QuizEntry.TABLE_NAME + " (" +
                     QuizEntry._ID + " INTEGER PRIMARY KEY," +
                     QuizEntry.COLUMN_NAME_TITLE + " TEXT," +
                     QuizEntry.COLUMN_NAME_DATE + " TEXT)";
 
+    // SQL statements for results table
     private static final String SQL_CREATE_RESULTS =
             "CREATE TABLE " + ResultEntry.TABLE_NAME + " (" +
                     ResultEntry._ID + " INTEGER PRIMARY KEY," +
@@ -84,6 +86,10 @@ public class CountryDbHelper extends SQLiteOpenHelper {
         this.context = context;
     }
 
+    /**
+     * Executes SQL statements.
+     * @param db The database.
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create all tables
@@ -92,6 +98,12 @@ public class CountryDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_RESULTS);
     }
 
+    /**
+     * Called when the database needs to be changed and updated.
+     * @param db The database.
+     * @param oldVersion The old database version.
+     * @param newVersion The new database version.
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop all tables and recreate them
@@ -208,20 +220,18 @@ public class CountryDbHelper extends SQLiteOpenHelper {
         // gets the date and time of the quiz completion and formats it
         String date = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
 
-        // create a new quiz record
+        // inserts to the quizzes table
         ContentValues quizValues = new ContentValues();
         quizValues.put(DatabaseContract.QuizEntry.COLUMN_NAME_TITLE, "Quiz");
         quizValues.put(DatabaseContract.QuizEntry.COLUMN_NAME_DATE, date);
         long quizId = db.insert(DatabaseContract.QuizEntry.TABLE_NAME, null, quizValues);
 
-        // inserts the quiz result
+        // inserts to the results table
         ContentValues resultValues = new ContentValues();
         resultValues.put(DatabaseContract.ResultEntry.COLUMN_NAME_QUIZ_ID, quizId);
         resultValues.put(DatabaseContract.ResultEntry.COLUMN_NAME_SCORE, score);
         resultValues.put(DatabaseContract.ResultEntry.COLUMN_NAME_DATE, date);
         db.insert(DatabaseContract.ResultEntry.TABLE_NAME, null, resultValues);
     }
-
-
 
 }

@@ -26,7 +26,13 @@ public class MainActivity extends AppCompatActivity implements ImportCsvTask.OnI
 
     private CountryDbHelper dbHelper;
 
-
+    /**
+     * Called when created and sets up user interface.
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements ImportCsvTask.OnI
                 startActivity(intent);
             }
         });
-
 
         // Initialize database
         initializeDatabase();
@@ -76,7 +81,8 @@ public class MainActivity extends AppCompatActivity implements ImportCsvTask.OnI
     }
 
     /**
-     * Called when database import is complete
+     * Checks if CSV import was successful.
+     * @param success True if the import was successful, false otherwise
      */
     @Override
     public void onImportComplete(boolean success) {
